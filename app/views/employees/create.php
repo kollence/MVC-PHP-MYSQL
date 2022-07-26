@@ -1,0 +1,97 @@
+<?php
+include '../app/views/components/header.php';
+$jobList = $data['jobList'] ?? [];
+?>
+
+<div class="container">
+    <h1>CREATE</h1>
+    <div>
+        <a href="/emloyees/index">Back</a>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-6 mt-5 border p-3">
+            <form action="/employees/store" method="POST">
+                <div class="row">
+                    <div id="nameHelpBlock" class="col-6">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" aria-describedby="nameHelpBlock">
+                    </div>
+
+                    <div id="surnameHelpBlock" class="col-6">
+                        <label for="surname" class="form-label">Surname</label>
+                        <input type="text" id="surname" name="surname" class="form-control" aria-describedby="surnameHelpBlock">
+
+                    </div>
+                    
+                </div>
+                <hr>
+                <div class="row">
+                    <div id="emailHelpBlock" class="col-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" aria-describedby="emailHelpBlock">
+                    </div>
+
+
+                    <div id="phoneHelpBlock" class="col-6">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" id="phone" name="phone" class="form-control" aria-describedby="phoneHelpBlock">
+                    </div>
+                    
+                </div>
+                <hr>
+
+                <label for="degree" class="form-label">Degree</label>
+                <input type="text" id="degree" name="degree" class="form-control" aria-describedby="degreeHelpBlock">
+                <div id="degreeHelpBlock" class="form-text">
+                    Enter Degree.
+                </div>
+                <hr>
+                <div class="form-floating">
+                    <select class="form-select" name="job_position" id="positionSelect" aria-label="Floating label select example">
+                        <option selected data-salary="0">Job Positions</option>
+                        <?php
+                        foreach ($jobList as $job) {
+                        ?>
+                            <option value="<?= $job['name'] ?>" data-salary="<?= $job['salary'] ?>">
+                                <?= $job['name'] ?>
+                            </option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                    <label for="floatingSelect">Picking a job position will automaticly show generall salary</label>
+                </div>
+                <hr>
+                <div id="generalSalary" style="display: none;">
+                    <label for="salary" class="form-label">Salary</label>
+                    <input type="number" id="salary" name="salary" class="form-control" aria-describedby="salaryHelpBlock">
+                    <div id="salaryHelpBlock" class="form-text">
+                        Enter salary.
+                    </div>
+                </div>
+                <div class="mt-4 px-3 row justify-content-between">
+                <input type="submit" name="submited" value="Submit" class="btn btn-primary col-3"><a class="btn btn-primary col-2" href="/employees/index">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const selection = document.getElementById("positionSelect");
+    const generalSalary = document.getElementById("generalSalary");
+
+    selection.onchange = function(event) {
+
+        var salary = event.target.options[event.target.selectedIndex].dataset.salary;
+        let val = (salary == 0) ? '' : salary
+
+        generalSalary.style.display = (val > 0) ? 'block' : 'none';
+        document.getElementById("salary").value = val;
+
+    }
+</script>
+<?php
+
+include '../app/views/components/footer.php';
+?>
